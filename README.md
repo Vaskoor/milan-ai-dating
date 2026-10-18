@@ -32,16 +32,17 @@ This repository contains the API + store + page composition + layout + global st
 ## Table of Contents
 
 1. [Features](#features)
-2. [The Matching Algorithm](#the-matching-algorithm)
-3. [Architecture](#architecture)
-4. [Tech Stack](#tech-stack)
-5. [Quick Start](#quick-start)
-6. [API Reference](#api-reference)
-7. [Reproducibility](#reproducibility)
-8. [Project Layout](#project-layout)
-9. [Roadmap](#roadmap)
-10. [Contributing](#contributing)
-11. [License](#license)
+2. [Screenshots](#screenshots)
+3. [The Matching Algorithm](#the-matching-algorithm)
+4. [Architecture](#architecture)
+5. [Tech Stack](#tech-stack)
+6. [Quick Start](#quick-start)
+7. [API Reference](#api-reference)
+8. [Reproducibility](#reproducibility)
+9. [Project Layout](#project-layout)
+10. [Roadmap](#roadmap)
+11. [Contributing](#contributing)
+12. [License](#license)
 
 ---
 
@@ -68,6 +69,82 @@ This repository contains the API + store + page composition + layout + global st
 ### ⚙️ Preferences
 - Preferences are stored both **client-side** (Zustand + `localStorage` under the key `milan-dating-store-v1`) and **server-side** (in the `MatchingEngine`'s preferences map).
 - `partialize` ensures only user-meaningful fields (`currentUser`, `preferences`, `activeTab`, `matches`) are persisted; transient UI flags (`loading`, `error`, `lastMatch`, `selectedMatch`, `recommendations`) are re-derived on load.
+
+---
+
+## Screenshots
+
+The screenshots below are **proof that the deployed app actually runs** — they were captured by `agent-browser` against a live `bun run dev` server on `http://localhost:3000/`.
+
+### Onboarding flow (4 steps)
+
+A welcome flow for brand-new users: Welcome → About you → Preferences → Ready. Animated transitions + progress bar + validation + `onboarded` persistence.
+
+| Welcome | About you | Preferences | Ready |
+|---------|-----------|-------------|-------|
+| ![Onboarding welcome](docs/screenshots/01-onboarding-welcome.png) | ![Onboarding about](docs/screenshots/02-onboarding-about.png) | ![Onboarding prefs](docs/screenshots/03-onboarding-prefs.png) | ![Onboarding ready](docs/screenshots/04-onboarding-ready.png) |
+
+### Discover — the swipe deck + Daily Picks
+
+The main surface: a 6-tab NavBar (Discover/Likes/Matches/Activity/Chat/Profile), a **Daily Picks** hero strip (top-3 curated profiles that show even when the deck is empty, rotated daily via a deterministic hash), a **filter button** that opens a slide-up sheet, an **AI-ranked** badge, an "N nearby" pill, and the card stack with photo carousel + compatibility % badge + online-now pulse + AI reason chip.
+
+![Discover with Daily Picks](docs/screenshots/05-discover-daily-picks.png)
+
+### Profile detail modal + compatibility breakdown
+
+Tapping a card opens a full-screen modal with the photo gallery, bio, interests, background, lifestyle, and a **"Why we matched"** section showing the composite score circle + 9 per-component progress bars (interests/age fit/proximity/lifestyle/education/content/collab/desirability/novelty) + the engine's reason string. A Share2 button (top-left) opens the Share/Report sheet.
+
+| Profile detail modal | Compatibility breakdown (scrolled) |
+|----------------------|-------------------------------------|
+| ![Profile detail modal](docs/screenshots/06-profile-detail-modal.png) | ![Compatibility in modal](docs/screenshots/07-compatibility-in-modal.png) |
+
+### Likes You — gold-tier blurred card stack
+
+A full-screen premium page with a Crown icon, blurred profile cards, a Reveal flow (tap to unblur), and Skip/Reveal/Match action buttons. The amber accent (badge + underline) distinguishes it from the rose-themed main app.
+
+![Likes You page](docs/screenshots/08-likes-you.png)
+
+### Matches — sorting tabs + enhanced tiles
+
+A grid of matched profiles with sorting tabs (All/New/Online), each tile showing an ONLINE pulse badge, verified checkmark, and a NEW badge for the first 4 matches. A "Likes You" hero strip at the top shows blurred photos + a count + a See CTA.
+
+![Matches page](docs/screenshots/09-matches.png)
+
+### Activity feed
+
+A vertical timeline of 5 event types (match/like/message/view/boost), each with a profile photo thumbnail, a coloured icon badge, a relative timestamp ("just now", "5m ago", "1h ago"), and an unread pip. A "N new" pill in the header.
+
+![Activity feed](docs/screenshots/10-activity.png)
+
+### Filter sheet
+
+A slide-up bottom sheet for quick preference edits directly from Discover: age range 2-thumb slider, max distance slider, 3 gender toggle buttons, 15 interest chips with check icons, + Reset/Apply buttons. Changes commit live + re-fetch the deck.
+
+![Filter sheet](docs/screenshots/11-filter-sheet.png)
+
+### Chat — persisted messages + smart replies
+
+A 1:1 chat with right-aligned rose user bubbles (read-receipt double-checkmark) + left-aligned gray match bubbles. AI conversation starter chips before the first message, then "Suggest" smart-reply chips after. Messages persist to SQLite via Prisma + survive server restarts. The auto-reply is context-aware (references the match's interests/city/bio).
+
+![Chat](docs/screenshots/12-chat.png)
+
+### Profile page — completion bar + stats
+
+The user's header (photo, name, age, bio, city), a **Profile strength** progress bar (6-item checklist, emerald/amber/rose 3-tone gradient), and 3 stat cards (Matches/Likes you/Views). A photo-URL editor toggles open from the Change-photo button. A Settings section opens the full SettingsSheet.
+
+![Profile page](docs/screenshots/13-profile.png)
+
+### Settings sheet
+
+A slide-up sheet with 7 real toggle switches (4 notification + 3 privacy) that **actually affect the UI** — `showOnline: false` hides the card's online dot, `showDistance: false` shows "Location hidden" instead of the city. Plus a Reset demo button + an About section (version/build/engine/license) + Log out.
+
+![Settings sheet](docs/screenshots/14-settings.png)
+
+### Desktop responsive
+
+The app is mobile-first but renders cleanly at desktop width as a centered phone-width column with a gradient background.
+
+![Desktop full page](docs/screenshots/15-desktop-full.png)
 
 ---
 
